@@ -1,0 +1,16 @@
+# 로컬 개발용 DB. 저장소 루트에서 실행:
+#   docker compose --env-file .env -f infra/docker-compose.yml up -d
+name: ansimi
+services:
+  db:
+    image: postgis/postgis:18-3.6
+    environment:
+      POSTGRES_DB: ansimi
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5433:5432"   # 로컬에 설치된 PostgreSQL(5432)과 겹치지 않게 5433 사용
+    volumes:
+      - dbdata:/var/lib/postgresql   # PostgreSQL 18 이미지부터 /data가 아닌 상위 경로에 마운트
+volumes:
+  dbdata:
