@@ -1,0 +1,872 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97794330490989,
+          37.566157493985145
+        ]
+      },
+      "properties": {
+        "totalDistance": 1200,
+        "totalTime": 1014,
+        "index": 0,
+        "pointIndex": 0,
+        "name": "",
+        "description": "보행자도로를 따라 51m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "11",
+        "facilityName": "",
+        "turnType": 200,
+        "pointType": "SP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97794330490989,
+            37.566157493985145
+          ],
+          [
+            126.97790997461412,
+            37.56615749338722
+          ],
+          [
+            126.97759333688305,
+            37.56615471025223
+          ],
+          [
+            126.97737113491135,
+            37.56615470626619
+          ]
+        ]
+      },
+      "properties": {
+        "index": 1,
+        "lineIndex": 0,
+        "name": "보행자도로",
+        "description": "보행자도로, 51m",
+        "distance": 51,
+        "time": 41,
+        "roadType": 23,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97737113491135,
+          37.56615470626619
+        ]
+      },
+      "properties": {
+        "index": 2,
+        "pointIndex": 1,
+        "name": "시청역 5번출구",
+        "description": "시청역 5번출구에서 우회전 후 세종대로를 따라 79m 이동",
+        "direction": "",
+        "nearPoiName": "시청역 5번출구",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "11",
+        "facilityName": "",
+        "turnType": 13,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97737113491135,
+            37.56615470626619
+          ],
+          [
+            126.97737112924987,
+            37.566354683012555
+          ],
+          [
+            126.97736001136667,
+            37.56662965083942
+          ],
+          [
+            126.97736000460418,
+            37.566868511952975
+          ]
+        ]
+      },
+      "properties": {
+        "index": 3,
+        "lineIndex": 1,
+        "name": "세종대로",
+        "description": "세종대로, 79m",
+        "distance": 79,
+        "time": 87,
+        "roadType": 23,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97736000460418,
+          37.566868511952975
+        ]
+      },
+      "properties": {
+        "index": 4,
+        "pointIndex": 2,
+        "name": "시청역 4번출구",
+        "description": "시청역 4번출구에서 좌측 횡단보도 후 보행자도로를 따라 39m 이동",
+        "direction": "",
+        "nearPoiName": "시청역 4번출구",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "15",
+        "facilityName": "",
+        "turnType": 212,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97736000460418,
+            37.566868511952975
+          ],
+          [
+            126.97692115594648,
+            37.5668601717161
+          ]
+        ]
+      },
+      "properties": {
+        "index": 5,
+        "lineIndex": 2,
+        "name": "보행자도로",
+        "description": "보행자도로, 39m",
+        "distance": 39,
+        "time": 26,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "15",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97692115594648,
+          37.5668601717161
+        ]
+      },
+      "properties": {
+        "index": 6,
+        "pointIndex": 3,
+        "name": "",
+        "description": "우회전 후 세종대로를 따라 237m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "11",
+        "facilityName": "",
+        "turnType": 13,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97692115594648,
+            37.5668601717161
+          ],
+          [
+            126.97691003979317,
+            37.567074035536976
+          ],
+          [
+            126.9769100377487,
+            37.567146249361954
+          ],
+          [
+            126.97690169904132,
+            37.56736289068738
+          ],
+          [
+            126.97688501730138,
+            37.567948933352255
+          ],
+          [
+            126.97686000117838,
+            37.568598857327615
+          ],
+          [
+            126.97680721688619,
+            37.56899880987218
+          ]
+        ]
+      },
+      "properties": {
+        "index": 7,
+        "lineIndex": 3,
+        "name": "세종대로",
+        "description": "세종대로, 237m",
+        "distance": 237,
+        "time": 200,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97680721688619,
+          37.56899880987218
+        ]
+      },
+      "properties": {
+        "index": 8,
+        "pointIndex": 4,
+        "name": "",
+        "description": "횡단보도 후 보행자도로를 따라 16m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "15",
+        "facilityName": "",
+        "turnType": 211,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97680721688619,
+            37.56899880987218
+          ],
+          [
+            126.97681832297404,
+            37.56914046026627
+          ]
+        ]
+      },
+      "properties": {
+        "index": 9,
+        "lineIndex": 4,
+        "name": "보행자도로",
+        "description": "보행자도로, 16m",
+        "distance": 16,
+        "time": 10,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "15",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97681832297404,
+          37.56914046026627
+        ]
+      },
+      "properties": {
+        "index": 10,
+        "pointIndex": 5,
+        "name": "",
+        "description": "직진 후 세종대로를 따라 86m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "11",
+        "facilityName": "",
+        "turnType": 11,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97681832297404,
+            37.56914046026627
+          ],
+          [
+            126.97677943401165,
+            37.569268222489434
+          ],
+          [
+            126.97677109074243,
+            37.56964595619249
+          ],
+          [
+            126.97680719541694,
+            37.569757055032134
+          ],
+          [
+            126.97680719376542,
+            37.56981538158287
+          ],
+          [
+            126.97679052720204,
+            37.569865375470236
+          ],
+          [
+            126.97675441843809,
+            37.56989870428003
+          ]
+        ]
+      },
+      "properties": {
+        "index": 11,
+        "lineIndex": 5,
+        "name": "세종대로",
+        "description": "세종대로, 86m",
+        "distance": 86,
+        "time": 92,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97675441843809,
+          37.56989870428003
+        ]
+      },
+      "properties": {
+        "index": 12,
+        "pointIndex": 6,
+        "name": "광화문역 6번출구",
+        "description": "광화문역 6번출구에서 횡단보도 후 12m 이동",
+        "direction": "",
+        "nearPoiName": "광화문역 6번출구",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "세종로사거리",
+        "facilityType": "15",
+        "facilityName": "",
+        "turnType": 211,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97675441843809,
+            37.56989870428003
+          ],
+          [
+            126.97682940908653,
+            37.569987584178875
+          ]
+        ]
+      },
+      "properties": {
+        "index": 13,
+        "lineIndex": 6,
+        "name": "",
+        "description": ", 12m",
+        "distance": 12,
+        "time": 8,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "15",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97682940908653,
+          37.569987584178875
+        ]
+      },
+      "properties": {
+        "index": 14,
+        "pointIndex": 7,
+        "name": "",
+        "description": "직진 후 12m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "11",
+        "facilityName": "",
+        "turnType": 11,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97682940908653,
+            37.569987584178875
+          ],
+          [
+            126.97688218048165,
+            37.570043134221535
+          ],
+          [
+            126.97689606708244,
+            37.57007924138303
+          ]
+        ]
+      },
+      "properties": {
+        "index": 15,
+        "lineIndex": 7,
+        "name": "",
+        "description": ", 12m",
+        "distance": 12,
+        "time": 38,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97689606708244,
+          37.57007924138303
+        ]
+      },
+      "properties": {
+        "index": 16,
+        "pointIndex": 8,
+        "name": "",
+        "description": "횡단보도 후 보행자도로를 따라 36m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "",
+        "facilityType": "15",
+        "facilityName": "",
+        "turnType": 211,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97689606708244,
+            37.57007924138303
+          ],
+          [
+            126.97689050935924,
+            37.57017367474642
+          ],
+          [
+            126.9768877254643,
+            37.570398648535
+          ]
+        ]
+      },
+      "properties": {
+        "index": 17,
+        "lineIndex": 8,
+        "name": "보행자도로",
+        "description": "보행자도로, 36m",
+        "distance": 36,
+        "time": 24,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "15",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.9768877254643,
+          37.570398648535
+        ]
+      },
+      "properties": {
+        "index": 18,
+        "pointIndex": 9,
+        "name": "",
+        "description": "우회전 후 새문안로를 따라 4m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "세종로사거리",
+        "facilityType": "11",
+        "facilityName": "",
+        "turnType": 13,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.9768877254643,
+            37.570398648535
+          ],
+          [
+            126.97692383257667,
+            37.57042364627593
+          ]
+        ]
+      },
+      "properties": {
+        "index": 19,
+        "lineIndex": 9,
+        "name": "새문안로",
+        "description": "새문안로, 4m",
+        "distance": 4,
+        "time": 3,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97692383257667,
+            37.57042364627593
+          ],
+          [
+            126.97697104915841,
+            37.57047086385453
+          ],
+          [
+            126.97698493560186,
+            37.570512525925594
+          ],
+          [
+            126.97699604176802,
+            37.57065139886461
+          ],
+          [
+            126.97704881190467,
+            37.57075138818395
+          ],
+          [
+            126.97706546785054,
+            37.571076350693694
+          ],
+          [
+            126.97706546729998,
+            37.571095792877244
+          ],
+          [
+            126.97707379484027,
+            37.57127355013342
+          ],
+          [
+            126.97707101582128,
+            37.57132632172463
+          ],
+          [
+            126.97706545550244,
+            37.571512411095966
+          ],
+          [
+            126.97706267184299,
+            37.57172905251978
+          ],
+          [
+            126.97705432857234,
+            37.57210678622161
+          ],
+          [
+            126.97704876133169,
+            37.57253729161403
+          ],
+          [
+            126.97704598199799,
+            37.572601173024296
+          ],
+          [
+            126.97704875881472,
+            37.572626170167204
+          ],
+          [
+            126.97702375598047,
+            37.57280670427982
+          ],
+          [
+            126.97702375448601,
+            37.57285947592075
+          ],
+          [
+            126.97693208720662,
+            37.57317610412177
+          ],
+          [
+            126.97692096169114,
+            37.57372048505997
+          ],
+          [
+            126.97690984231077,
+            37.57404822452488
+          ],
+          [
+            126.97692372820333,
+            37.57410932877922
+          ],
+          [
+            126.97692372647279,
+            37.5741704327844
+          ],
+          [
+            126.97692372560752,
+            37.57420098478699
+          ],
+          [
+            126.97691816906374,
+            37.57425375632815
+          ],
+          [
+            126.97691538729138,
+            37.57440373883643
+          ],
+          [
+            126.97690426539351,
+            37.574820356853934
+          ],
+          [
+            126.97689037548919,
+            37.57490090279333
+          ],
+          [
+            126.97687093203024,
+            37.57492867699227
+          ],
+          [
+            126.97685148841397,
+            37.57496200610077
+          ],
+          [
+            126.9767487185086,
+            37.57501477589768
+          ]
+        ]
+      },
+      "properties": {
+        "index": 20,
+        "lineIndex": 10,
+        "name": "세종대로",
+        "description": "세종대로, 519m",
+        "distance": 519,
+        "time": 401,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.9767487185086,
+          37.57501477589768
+        ]
+      },
+      "properties": {
+        "index": 21,
+        "pointIndex": 10,
+        "name": "",
+        "description": "우측 횡단보도 후 37m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "광화문삼거리",
+        "facilityType": "15",
+        "facilityName": "",
+        "turnType": 213,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.9767487185086,
+            37.57501477589768
+          ],
+          [
+            126.97677092934445,
+            37.57534529341477
+          ]
+        ]
+      },
+      "properties": {
+        "index": 22,
+        "lineIndex": 11,
+        "name": "",
+        "description": ", 37m",
+        "distance": 37,
+        "time": 24,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "15",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97677092934445,
+          37.57534529341477
+        ]
+      },
+      "properties": {
+        "index": 23,
+        "pointIndex": 11,
+        "name": "",
+        "description": "직진 후 보행자도로를 따라 72m 이동",
+        "direction": "",
+        "nearPoiName": "",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "광화문삼거리",
+        "facilityType": "11",
+        "facilityName": "",
+        "turnType": 11,
+        "pointType": "GP"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97677092934445,
+            37.57534529341477
+          ],
+          [
+            126.97681257396302,
+            37.575989663670065
+          ]
+        ]
+      },
+      "properties": {
+        "index": 24,
+        "lineIndex": 12,
+        "name": "보행자도로",
+        "description": "보행자도로, 72m",
+        "distance": 72,
+        "time": 60,
+        "roadType": 21,
+        "categoryRoadType": 0,
+        "facilityType": "11",
+        "facilityName": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.97681257396302,
+          37.575989663670065
+        ]
+      },
+      "properties": {
+        "index": 25,
+        "pointIndex": 12,
+        "name": "%EA%B4%91%ED%99%94%EB%AC%B8",
+        "description": "도착",
+        "direction": "",
+        "nearPoiName": "%EA%B4%91%ED%99%94%EB%AC%B8",
+        "nearPoiX": "0.0",
+        "nearPoiY": "0.0",
+        "intersectionName": "%EA%B4%91%ED%99%94%EB%AC%B8",
+        "facilityType": "",
+        "facilityName": "",
+        "turnType": 201,
+        "pointType": "EP"
+      }
+    }
+  ]
+}
