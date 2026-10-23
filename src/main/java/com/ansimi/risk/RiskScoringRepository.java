@@ -56,18 +56,20 @@ public class RiskScoringRepository {
 						parseLineStrings(rs.getString("piece"))));
 	}
 
-	// piece는 격자와 경로 교차 결과라 LineString 또는 MultiLineString일 수 있다 — 둘 다
-	// 좌표 목록들의 목록으로 통일해 둔다.
+	// piece는 격자와 경로 교차 결과다. 대부분 LineString/MultiLineString이지만, 경로가 격자
+	// 경계에 점으로만 닿는 경우 Point/MultiPoint/GeometryCollection도 나올 수 있다 — 길이가
+	// 0이라 riskScore·redLengthM 계산에는 영향이 없으므로 선 geometry가 아니면 건너뛴다.
 	private List<List<double[]>> parseLineStrings(String geoJson) {
 		JsonNode geometry = objectMapper.readTree(geoJson);
+		String type = geometry.path("type").asString();
 		JsonNode coordinates = geometry.path("coordinates");
 
 		List<List<double[]>> lines = new ArrayList<>();
-		if ("MultiLineString".equals(geometry.path("type").asString())) {
+		if ("MultiLineString".equals(type)) {
 			for (JsonNode line : coordinates) {
 				lines.add(toPoints(line));
 			}
-		} else {
+		} else if ("LineString".equals(type)) {
 			lines.add(toPoints(coordinates));
 		}
 		return lines;
