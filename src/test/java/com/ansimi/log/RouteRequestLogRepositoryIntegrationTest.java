@@ -39,7 +39,9 @@ class RouteRequestLogRepositoryIntegrationTest {
 
 	@Test
 	void 삭제_기준일보다_오래된_로그만_지워진다() {
-		// 다른 테스트가 남긴 행과 섞이지 않게, 이 테스트만 쓰는 좌표(1.111/2.222)로 표시해둔다.
+		// 다른 테스트 실행이 남긴 행과 섞이지 않게, 이 테스트만 쓰는 좌표(1.111/2.222)로 표시하고
+		// 매번 먼저 지워서 재실행에도 누적되지 않게 한다.
+		jdbcTemplate.update("DELETE FROM route_request WHERE origin_lat IN (1.111, 2.222)", Map.of());
 		insertWithCreatedAt(1.111, Instant.now().minus(40, ChronoUnit.DAYS));
 		insertWithCreatedAt(2.222, Instant.now().minus(10, ChronoUnit.DAYS));
 
