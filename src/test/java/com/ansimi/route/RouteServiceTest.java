@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import tools.jackson.databind.ObjectMapper;
 
 class RouteServiceTest {
 
+	private RequestValidator requestValidator;
 	private RouteCandidateService routeCandidateService;
 	private RiskScoringService riskScoringService;
 	private AppConfigService appConfigService;
@@ -37,11 +39,13 @@ class RouteServiceTest {
 
 	@BeforeEach
 	void setUp() {
+		requestValidator = mock(RequestValidator.class);
 		routeCandidateService = mock(RouteCandidateService.class);
 		riskScoringService = mock(RiskScoringService.class);
 		appConfigService = mock(AppConfigService.class);
 		recommendPolicy = mock(RecommendPolicy.class);
-		routeService = new RouteService(routeCandidateService, riskScoringService, recommendPolicy, appConfigService);
+		routeService = new RouteService(
+				requestValidator, routeCandidateService, riskScoringService, recommendPolicy, appConfigService);
 	}
 
 	@Test
@@ -84,6 +88,8 @@ class RouteServiceTest {
 		assertThat(second.index()).isEqualTo(1);
 		assertThat(second.source()).isEqualTo("DETOUR_LEFT");
 		assertThat(second.detourRatio()).isEqualTo(1.15);
+
+		verify(requestValidator).validate(request);
 	}
 
 	// 후보마다 좌표가 달라야 riskScoringService.score(...) 스텁이 서로 섞이지 않는다.

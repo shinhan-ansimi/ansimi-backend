@@ -103,6 +103,99 @@ class RouteControllerIntegrationTest {
 				.andExpect(status().isForbidden());
 	}
 
+	@Test
+	void 좌표_형식이_잘못되면_400_INVALID_REQUEST가_나온다() throws Exception {
+		String invalidFormatBody = """
+				{
+				  "origin": {"coord": [127.0373], "name": "출발"},
+				  "destination": {"coord": [127.0573, 37.5232], "name": "도착"}
+				}
+				""";
+
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(invalidFormatBody))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.code").value("INVALID_REQUEST"));
+	}
+
+	@Test
+	void 좌표_범위가_잘못되면_400_INVALID_REQUEST가_나온다() throws Exception {
+		String outOfRangeBody = """
+				{
+				  "origin": {"coord": [200.0, 37.5112], "name": "출발"},
+				  "destination": {"coord": [127.0573, 37.5232], "name": "도착"}
+				}
+				""";
+
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(outOfRangeBody))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.code").value("INVALID_REQUEST"));
+	}
+
+	@Test
+	void 거리가_너무_가까우면_400_INVALID_DISTANCE가_나온다() throws Exception {
+		String tooCloseBody = """
+				{
+				  "origin": {"coord": [127.0473, 37.5172], "name": "출발"},
+				  "destination": {"coord": [127.04731, 37.5172], "name": "도착"}
+				}
+				""";
+
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(tooCloseBody))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.code").value("INVALID_DISTANCE"));
+	}
+
+	@Test
+	void 거리가_너무_멀면_400_INVALID_DISTANCE가_나온다() throws Exception {
+		String tooFarBody = """
+				{
+				  "origin": {"coord": [127.0473, 37.5172], "name": "출발"},
+				  "destination": {"coord": [127.17, 37.5172], "name": "도착"}
+				}
+				""";
+
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(tooFarBody))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.code").value("INVALID_DISTANCE"));
+	}
+
+	@Test
+	void 시범_지역_밖이면_422_OUT_OF_AREA가_나온다() throws Exception {
+		String outOfAreaBody = """
+				{
+				  "origin": {"coord": [129.0756, 35.1796], "name": "출발"},
+				  "destination": {"coord": [129.0856, 35.1796], "name": "도착"}
+				}
+				""";
+
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(outOfAreaBody))
+				.andExpect(status().isUnprocessableContent())
+				.andExpect(jsonPath("$.code").value("OUT_OF_AREA"));
+	}
+
+	@Test
+	void Tmap_호출이_전부_실패하면_502_ROUTE_PROVIDER_ERROR가_나온다() throws Exception {
+		for (int i = 0; i < 4; i++) {
+			TMAP_SERVER.enqueue(new MockResponse.Builder().code(500).build());
+		}
+
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(requestBody()))
+				.andExpect(status().isBadGateway())
+				.andExpect(jsonPath("$.code").value("ROUTE_PROVIDER_ERROR"));
+	}
+
 	private String requestBody() {
 		return """
 				{

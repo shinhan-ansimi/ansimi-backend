@@ -26,12 +26,15 @@ public class RouteService {
 	private static final String NOTICE = "추천 경로는 참고용이며, 실제 보행 시 주변 상황을 직접 확인하세요.";
 	private static final String TMAP_OPTION_PREFIX = "TMAP_OPTION_";
 
+	private final RequestValidator requestValidator;
 	private final RouteCandidateService routeCandidateService;
 	private final RiskScoringService riskScoringService;
 	private final RecommendPolicy recommendPolicy;
 	private final AppConfigService appConfigService;
 
 	public RecommendResponse recommend(RecommendRequest request) {
+		requestValidator.validate(request);
+
 		List<RouteCandidate> candidates = routeCandidateService.findCandidates(toRouteRequest(request));
 
 		List<RouteRiskScore> riskScores = candidates.stream()
