@@ -2,8 +2,11 @@ package com.ansimi.route;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import com.ansimi.candidate.RouteCandidate;
 import com.ansimi.candidate.RouteCandidateService;
 import com.ansimi.candidate.RouteRequest;
 import com.ansimi.config.AppConfigService;
+import com.ansimi.log.RouteRequestLogService;
 import com.ansimi.risk.RiskScoringService;
 import com.ansimi.risk.RouteRiskScore;
 import com.ansimi.route.dto.CandidateDto;
@@ -24,6 +28,8 @@ import com.ansimi.route.dto.RecommendRequest;
 import com.ansimi.route.dto.RecommendResponse;
 import com.ansimi.tmap.TmapRoute;
 import com.ansimi.tmap.TmapRoute.Coordinate;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -35,6 +41,8 @@ class RouteServiceTest {
 	private RiskScoringService riskScoringService;
 	private AppConfigService appConfigService;
 	private RecommendPolicy recommendPolicy;
+	private Cache<String, RecommendResponse> recommendCache;
+	private RouteRequestLogService routeRequestLogService;
 	private RouteService routeService;
 
 	@BeforeEach
@@ -44,8 +52,11 @@ class RouteServiceTest {
 		riskScoringService = mock(RiskScoringService.class);
 		appConfigService = mock(AppConfigService.class);
 		recommendPolicy = mock(RecommendPolicy.class);
+		recommendCache = Caffeine.newBuilder().build();
+		routeRequestLogService = mock(RouteRequestLogService.class);
 		routeService = new RouteService(
-				requestValidator, routeCandidateService, riskScoringService, recommendPolicy, appConfigService);
+				requestValidator, routeCandidateService, riskScoringService, recommendPolicy, appConfigService,
+				recommendCache, routeRequestLogService);
 	}
 
 	@Test
@@ -90,6 +101,49 @@ class RouteServiceTest {
 		assertThat(second.detourRatio()).isEqualTo(1.15);
 
 		verify(requestValidator).validate(request);
+		verify(routeRequestLogService).log(eq(request), any(RecommendResponse.class), anyLong());
+	}
+
+	@Test
+	void 같은_요청이면_캐시에서_응답하고_후보_생성을_다시_하지_않는다() {
+		RouteCandidate candidateA = candidate("0", 1000, 600);
+		given(routeCandidateService.findCandidates(any(RouteRequest.class))).willReturn(List.of(candidateA));
+		given(riskScoringService.score(candidateA.route().coordinates())).willReturn(riskScore(40, "YELLOW", 0));
+		given(recommendPolicy.recommend(List.of(new ScoredCandidate(1000, 40))))
+				.willReturn(new RecommendResult(List.of(1.0), List.of(true), 0));
+		given(appConfigService.getString("active_model")).willReturn("v1");
+
+		RecommendRequest request = new RecommendRequest(
+				new Place(List.of(127.0473, 37.5172), "출발"),
+				new Place(List.of(127.0573, 37.5232), "도착"));
+
+		RecommendResponse first = routeService.recommend(request);
+		RecommendResponse second = routeService.recommend(request);
+
+		assertThat(second).isEqualTo(first);
+		verify(routeCandidateService, times(1)).findCandidates(any(RouteRequest.class));
+		verify(routeRequestLogService, times(2))
+				.log(eq(request), any(RecommendResponse.class), anyLong());
+	}
+
+	@Test
+	void active_model이_다르면_같은_좌표도_캐시를_따로_쓴다() {
+		RouteCandidate candidateA = candidate("0", 1000, 600);
+		given(routeCandidateService.findCandidates(any(RouteRequest.class))).willReturn(List.of(candidateA));
+		given(riskScoringService.score(candidateA.route().coordinates())).willReturn(riskScore(40, "YELLOW", 0));
+		given(recommendPolicy.recommend(List.of(new ScoredCandidate(1000, 40))))
+				.willReturn(new RecommendResult(List.of(1.0), List.of(true), 0));
+
+		RecommendRequest request = new RecommendRequest(
+				new Place(List.of(127.0473, 37.5172), "출발"),
+				new Place(List.of(127.0573, 37.5232), "도착"));
+
+		given(appConfigService.getString("active_model")).willReturn("v1");
+		routeService.recommend(request);
+		given(appConfigService.getString("active_model")).willReturn("v2");
+		routeService.recommend(request);
+
+		verify(routeCandidateService, times(2)).findCandidates(any(RouteRequest.class));
 	}
 
 	// 후보마다 좌표가 달라야 riskScoringService.score(...) 스텁이 서로 섞이지 않는다.
