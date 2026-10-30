@@ -27,6 +27,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0'  // Swagger UI
 	implementation 'com.github.ben-manes.caffeine:caffeine'          // 응답 캐시 (버전은 Boot가 관리)
 	testImplementation 'com.squareup.okhttp3:mockwebserver3:5.5.0'   // Tmap 가짜 서버
+	testImplementation 'org.awaitility:awaitility'                   // @Async 요청 로그 적재 대기
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'

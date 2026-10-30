@@ -1,12 +1,16 @@
 package com.ansimi.route;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Map;
 
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,11 +18,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.ansimi.route.dto.RecommendResponse;
+import com.github.benmanes.caffeine.cache.Cache;
 
 import mockwebserver3.MockResponse;
 import mockwebserver3.MockWebServer;
@@ -33,6 +41,12 @@ class RouteControllerIntegrationTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+
+	@Autowired
+	private Cache<String, RecommendResponse> recommendCache;
+
+	@Autowired
+	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	private MockMvc mockMvc;
 
@@ -55,6 +69,9 @@ class RouteControllerIntegrationTest {
 	@BeforeEach
 	void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		// Spring 컨텍스트가 테스트 메서드끼리 공유돼서, 캐시가 남아있으면 다른 테스트의
+		// Tmap 응답(MockWebServer enqueue)을 안 쓰고 캐시값을 돌려줄 수 있다 — 매번 비운다.
+		recommendCache.invalidateAll();
 	}
 
 	@Test
@@ -184,6 +201,29 @@ class RouteControllerIntegrationTest {
 	}
 
 	@Test
+	void 같은_요청을_두번_보내면_두번째는_캐시로_빠르게_응답하고_로그는_두건_남는다() throws Exception {
+		enqueueCandidateResponses(); // 딱 한 번 호출될 분량만 넣는다 — 두 번째 요청은 캐시로 처리돼야 한다.
+		long before = countRouteRequestRows();
+
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(requestBody()))
+				.andExpect(status().isOk());
+
+		long startedAt = System.currentTimeMillis();
+		mockMvc.perform(post("/api/routes/recommend")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(requestBody()))
+				.andExpect(status().isOk());
+		long elapsedMs = System.currentTimeMillis() - startedAt;
+
+		assertThat(elapsedMs).isLessThan(500);
+		// 요청 로그는 @Async라 응답이 끝난 뒤에도 잠깐 늦게 기록될 수 있다.
+		Awaitility.await().atMost(Duration.ofSeconds(2))
+				.untilAsserted(() -> assertThat(countRouteRequestRows()).isEqualTo(before + 2));
+	}
+
+	@Test
 	void Tmap_호출이_전부_실패하면_502_ROUTE_PROVIDER_ERROR가_나온다() throws Exception {
 		for (int i = 0; i < 4; i++) {
 			TMAP_SERVER.enqueue(new MockResponse.Builder().code(500).build());
@@ -194,6 +234,10 @@ class RouteControllerIntegrationTest {
 						.content(requestBody()))
 				.andExpect(status().isBadGateway())
 				.andExpect(jsonPath("$.code").value("ROUTE_PROVIDER_ERROR"));
+	}
+
+	private long countRouteRequestRows() {
+		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM route_request", Map.of(), Long.class);
 	}
 
 	private String requestBody() {
