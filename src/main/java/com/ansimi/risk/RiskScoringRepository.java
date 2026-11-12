@@ -43,8 +43,17 @@ public class RiskScoringRepository {
 			ORDER BY ST_LineLocatePoint(r.g, ST_Centroid(ST_Intersection(rg.geom, r.g)))
 			""";
 
+	private static final String HAS_V2_DATA_SQL = "SELECT EXISTS(SELECT 1 FROM risk_grid WHERE risk_v2 IS NOT NULL)";
+
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 	private final ObjectMapper objectMapper;
+
+	// v2 적용 전에는 risk_v2가 전부 NULL이다 (V1__init.sql). active_model=v2를 안전하게 쓸 수 있는지
+	// 판단하는 데 쓴다 (개발 명세 7장).
+	public boolean hasV2Data() {
+		Boolean exists = jdbcTemplate.queryForObject(HAS_V2_DATA_SQL, Map.of(), Boolean.class);
+		return Boolean.TRUE.equals(exists);
+	}
 
 	public List<RiskGridPiece> findPieces(String routeLineStringGeoJson, boolean useV2) {
 		String sql = useV2 ? SCORE_QUERY_V2 : SCORE_QUERY_V1;
