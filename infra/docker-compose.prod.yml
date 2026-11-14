@@ -1,0 +1,25 @@
+# 운영 배포용. VM에서 backend·ai·infra가 형제 디렉토리로 체크아웃된 상태를 가정한다
+# (예: /srv/ansimi/{backend,ai,infra}). 저장소 루트에서 실행:
+#   docker compose -f infra/docker-compose.prod.yml up -d --build
+name: ansimi
+services:
+  db:
+    image: postgis/postgis:18-3.6
+    env_file: .env
+    volumes:
+      - dbdata:/var/lib/postgresql
+    # ports 없음: 외부에서 DB 접속 불가 (VM 내부망에서만 backend가 접근)
+  backend:
+    build: ../backend
+    env_file: .env
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/ansimi
+    ports:
+      - "127.0.0.1:8080:8080"   # VM 내부(Nginx)에서만 접근
+    depends_on: [db]
+  ai:
+    build: ../ai
+    env_file: .env
+    # ports 없음: 내부망 전용
+volumes:
+  dbdata:
