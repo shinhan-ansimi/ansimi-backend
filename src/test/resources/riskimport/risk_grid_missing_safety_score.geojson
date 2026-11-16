@@ -1,0 +1,6 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature", "properties": {"grid_id": 900099}, "geometry": {"type": "Polygon", "coordinates": [[[127.0, 37.50], [127.001, 37.50], [127.001, 37.501], [127.0, 37.501], [127.0, 37.50]]]}}
+  ]
+}

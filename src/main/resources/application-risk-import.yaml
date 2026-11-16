@@ -1,0 +1,3 @@
+spring:
+  main:
+    web-application-type: none   # RiskGridImportRunner만 돌리고 종료 (Tomcat 안 띄움)
