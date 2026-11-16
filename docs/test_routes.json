@@ -1,0 +1,285 @@
+{
+  "note": "현재는 개발용 가짜 시범지역(db/seed/dev_seed.sql, 중심 lat 37.5172 / lng 127.0473, 반경 약 1.5km) 기준 좌표다. 실제 시범 지역이 확정되면(이슈 #27) center_lat/center_lng/radius_m만 바꿔서 이 방식으로 재생성하면 된다.",
+  "generation": {
+    "centerLat": 37.5172,
+    "centerLng": 127.0473,
+    "radiusM": 1300,
+    "seed": 11,
+    "distanceBucketsM": {
+      "단거리": [
+        300,
+        700
+      ],
+      "중거리": [
+        800,
+        1500
+      ],
+      "장거리": [
+        1600,
+        2500
+      ]
+    }
+  },
+  "routes": [
+    {
+      "id": 1,
+      "scenario": "단거리",
+      "approxDistanceM": 564,
+      "origin": {
+        "lat": 37.515807,
+        "lng": 127.057383
+      },
+      "destination": {
+        "lat": 37.517648,
+        "lng": 127.051431
+      }
+    },
+    {
+      "id": 2,
+      "scenario": "단거리",
+      "approxDistanceM": 420,
+      "origin": {
+        "lat": 37.512873,
+        "lng": 127.03934
+      },
+      "destination": {
+        "lat": 37.512259,
+        "lng": 127.034645
+      }
+    },
+    {
+      "id": 3,
+      "scenario": "단거리",
+      "approxDistanceM": 487,
+      "origin": {
+        "lat": 37.508252,
+        "lng": 127.039832
+      },
+      "destination": {
+        "lat": 37.507855,
+        "lng": 127.034341
+      }
+    },
+    {
+      "id": 4,
+      "scenario": "단거리",
+      "approxDistanceM": 466,
+      "origin": {
+        "lat": 37.508217,
+        "lng": 127.044967
+      },
+      "destination": {
+        "lat": 37.510474,
+        "lng": 127.040522
+      }
+    },
+    {
+      "id": 5,
+      "scenario": "단거리",
+      "approxDistanceM": 400,
+      "origin": {
+        "lat": 37.507599,
+        "lng": 127.049736
+      },
+      "destination": {
+        "lat": 37.51118,
+        "lng": 127.050282
+      }
+    },
+    {
+      "id": 6,
+      "scenario": "단거리",
+      "approxDistanceM": 568,
+      "origin": {
+        "lat": 37.522753,
+        "lng": 127.053298
+      },
+      "destination": {
+        "lat": 37.524069,
+        "lng": 127.05952
+      }
+    },
+    {
+      "id": 7,
+      "scenario": "단거리",
+      "approxDistanceM": 599,
+      "origin": {
+        "lat": 37.520127,
+        "lng": 127.043835
+      },
+      "destination": {
+        "lat": 37.519137,
+        "lng": 127.050506
+      }
+    },
+    {
+      "id": 8,
+      "scenario": "중거리",
+      "approxDistanceM": 955,
+      "origin": {
+        "lat": 37.515807,
+        "lng": 127.057263
+      },
+      "destination": {
+        "lat": 37.507451,
+        "lng": 127.054667
+      }
+    },
+    {
+      "id": 9,
+      "scenario": "중거리",
+      "approxDistanceM": 1122,
+      "origin": {
+        "lat": 37.521846,
+        "lng": 127.047219
+      },
+      "destination": {
+        "lat": 37.519882,
+        "lng": 127.059681
+      }
+    },
+    {
+      "id": 10,
+      "scenario": "중거리",
+      "approxDistanceM": 1207,
+      "origin": {
+        "lat": 37.520145,
+        "lng": 127.04712
+      },
+      "destination": {
+        "lat": 37.512875,
+        "lng": 127.057285
+      }
+    },
+    {
+      "id": 11,
+      "scenario": "중거리",
+      "approxDistanceM": 1440,
+      "origin": {
+        "lat": 37.525933,
+        "lng": 127.033799
+      },
+      "destination": {
+        "lat": 37.522087,
+        "lng": 127.049378
+      }
+    },
+    {
+      "id": 12,
+      "scenario": "중거리",
+      "approxDistanceM": 1121,
+      "origin": {
+        "lat": 37.516142,
+        "lng": 127.033306
+      },
+      "destination": {
+        "lat": 37.524922,
+        "lng": 127.039568
+      }
+    },
+    {
+      "id": 13,
+      "scenario": "중거리",
+      "approxDistanceM": 914,
+      "origin": {
+        "lat": 37.520244,
+        "lng": 127.051865
+      },
+      "destination": {
+        "lat": 37.5244,
+        "lng": 127.060799
+      }
+    },
+    {
+      "id": 14,
+      "scenario": "중거리",
+      "approxDistanceM": 1195,
+      "origin": {
+        "lat": 37.511868,
+        "lng": 127.042758
+      },
+      "destination": {
+        "lat": 37.521822,
+        "lng": 127.047901
+      }
+    },
+    {
+      "id": 15,
+      "scenario": "장거리",
+      "approxDistanceM": 1653,
+      "origin": {
+        "lat": 37.526715,
+        "lng": 127.035145
+      },
+      "destination": {
+        "lat": 37.527333,
+        "lng": 127.053848
+      }
+    },
+    {
+      "id": 16,
+      "scenario": "장거리",
+      "approxDistanceM": 1752,
+      "origin": {
+        "lat": 37.508531,
+        "lng": 127.045932
+      },
+      "destination": {
+        "lat": 37.520141,
+        "lng": 127.059371
+      }
+    },
+    {
+      "id": 17,
+      "scenario": "장거리",
+      "approxDistanceM": 2005,
+      "origin": {
+        "lat": 37.510484,
+        "lng": 127.059078
+      },
+      "destination": {
+        "lat": 37.528455,
+        "lng": 127.061356
+      }
+    },
+    {
+      "id": 18,
+      "scenario": "장거리",
+      "approxDistanceM": 2024,
+      "origin": {
+        "lat": 37.525534,
+        "lng": 127.042839
+      },
+      "destination": {
+        "lat": 37.507427,
+        "lng": 127.04556
+      }
+    },
+    {
+      "id": 19,
+      "scenario": "장거리",
+      "approxDistanceM": 1930,
+      "origin": {
+        "lat": 37.518378,
+        "lng": 127.055198
+      },
+      "destination": {
+        "lat": 37.516906,
+        "lng": 127.033414
+      }
+    },
+    {
+      "id": 20,
+      "scenario": "장거리",
+      "approxDistanceM": 1737,
+      "origin": {
+        "lat": 37.513335,
+        "lng": 127.055777
+      },
+      "destination": {
+        "lat": 37.508779,
+        "lng": 127.036955
+      }
+    }
+  ]
+}
