@@ -32,3 +32,13 @@ DELETE FROM service_area;
 ```
 
 위 SQL을 같은 방식으로 DB에 실행하면 된다(예: `psql` 접속 후 직접 입력, 또는 `-c` 옵션으로 전달).
+
+# 실제 시범 지역 데이터 (real_service_area.sql)
+
+이슈 #27: `dev_seed.sql`의 가짜 `service_area`(강남구 내 임의 좌표 3km x 3km)를 실제
+시범 지역(강남구)의 경계로 교체한다. 위 `dev_seed.sql`과 실행/삭제 방법은 동일하고
+(`db/seed/real_service_area.sql`로 경로만 바꿔서), `service_area.id=1` 행만 덮어쓴다.
+
+`risk_grid`는 그대로 두고(이슈 #12에서 `RiskGridImportRunner`로 AI 실데이터를 적재),
+`service_area` 경계만 이 스크립트로 먼저 갱신한 뒤 OUT_OF_AREA 경계 안/밖 좌표로
+422 응답을 재확인한다.
