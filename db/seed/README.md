@@ -42,3 +42,16 @@ DELETE FROM service_area;
 `risk_grid`는 그대로 두고(이슈 #12에서 `RiskGridImportRunner`로 AI 실데이터를 적재),
 `service_area` 경계만 이 스크립트로 먼저 갱신한 뒤 OUT_OF_AREA 경계 안/밖 좌표로
 422 응답을 재확인한다.
+
+# 실제 등급 기준값 재조정 (real_level_thresholds.sql)
+
+이슈 #12: 실제 `risk_grid.geojson`을 적재해보니 `risk_v1` 분포가 dev 가짜 데이터보다
+훨씬 높은 쪽에 몰려 있어서(평균 84), dev 기준값(60/85)으로는 전체의 55.8%가 RED로
+표시됐다. `level_yellow_min=75`, `level_red_min=92`로 재조정하고, 이미 적재된
+`risk_grid.level_v1`도 새 기준값으로 다시 계산한다. 실행/삭제 방법은 위와 동일
+(`db/seed/real_level_thresholds.sql`).
+
+**주의**: `risk_grid.level_v1`은 적재 시점 기준값으로 미리 계산해서 저장해두는 값이라,
+`app_config`만 바꾸면 전체 경로 단위 `riskLevel`(요청마다 새 기준값으로 재계산됨)은
+맞지만 세그먼트별 색상(`segments`)과 `redLengthM`은 옛 기준값 그대로 남는다. 기준값을
+또 바꾸게 되면 이 스크립트의 `CASE` 조건도 새 값으로 맞춰서 다시 실행해야 한다.
