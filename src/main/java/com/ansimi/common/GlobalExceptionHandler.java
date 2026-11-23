@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.ansimi.candidate.RouteProviderException;
 import com.ansimi.route.InvalidDistanceException;
@@ -41,6 +43,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(RouteProviderException.class)
 	public ResponseEntity<ErrorResponse> handleRouteProviderError(RouteProviderException e) {
 		return respond(ErrorCode.ROUTE_PROVIDER_ERROR, ErrorCode.ROUTE_PROVIDER_ERROR.defaultMessage(), e);
+	}
+
+	// 정의되지 않은 경로(예: 브라우저로 루트 "/" 접속)는 500이 아니라 404여야 한다.
+	@ExceptionHandler({ NoResourceFoundException.class, NoHandlerFoundException.class })
+	public ResponseEntity<ErrorResponse> handleNotFound(Exception e) {
+		return respond(ErrorCode.NOT_FOUND, ErrorCode.NOT_FOUND.defaultMessage(), e);
 	}
 
 	// 예상 못한 예외는 내부 메시지를 절대 응답에 담지 않는다 (명세 4장: 스택 트레이스 비노출).
