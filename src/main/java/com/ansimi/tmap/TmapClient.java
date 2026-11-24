@@ -50,8 +50,8 @@ public class TmapClient {
 		body.put("startY", request.startY());
 		body.put("endX", request.endX());
 		body.put("endY", request.endY());
-		body.put("startName", encode(request.startName()));
-		body.put("endName", encode(request.endName()));
+		body.put("startName", encode(request.startName(), "출발지"));
+		body.put("endName", encode(request.endName(), "도착지"));
 		body.put("searchOption", request.searchOption());
 		if (request.passList() != null) {
 			body.put("passList", request.passList());
@@ -59,8 +59,8 @@ public class TmapClient {
 		return body;
 	}
 
-	private String encode(String value) {
-		return URLEncoder.encode(value, StandardCharsets.UTF_8);
+	private String encode(String value, String fallback) {
+		return URLEncoder.encode(value == null || value.isBlank() ? fallback : value, StandardCharsets.UTF_8);
 	}
 
 }

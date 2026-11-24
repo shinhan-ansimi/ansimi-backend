@@ -1,5 +1,6 @@
 package com.ansimi.log;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,13 +49,16 @@ public class RouteRequestLogService {
 
 	private List<Map<String, Object>> summarize(List<CandidateDto> candidates) {
 		return candidates.stream()
-				.map(c -> Map.<String, Object>of(
-						"index", c.index(),
-						"distanceM", c.distanceM(),
-						"riskScore", c.riskScore(),
-						"riskLevel", c.riskLevel(),
-						"detourRatio", c.detourRatio(),
-						"eligible", c.eligible()))
+				.map(c -> {
+					Map<String, Object> summary = new LinkedHashMap<>();
+					summary.put("index", c.index());
+					summary.put("distanceM", c.distanceM());
+					summary.put("riskScore", c.riskScore());
+					summary.put("riskLevel", c.riskLevel());
+					summary.put("detourRatio", c.detourRatio());
+					summary.put("eligible", c.eligible());
+					return summary;
+				})
 				.toList();
 	}
 

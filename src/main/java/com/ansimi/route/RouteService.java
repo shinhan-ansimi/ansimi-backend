@@ -13,6 +13,7 @@ import com.ansimi.log.RouteRequestLogService;
 import com.ansimi.risk.RiskScoringService;
 import com.ansimi.risk.RouteRiskScore;
 import com.ansimi.route.dto.CandidateDto;
+import com.ansimi.route.dto.NavigationDto;
 import com.ansimi.route.dto.Place;
 import com.ansimi.route.dto.RecommendRequest;
 import com.ansimi.route.dto.RecommendResponse;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class RouteService {
 
 	private static final String NOTICE = "추천 경로는 참고용이며, 실제 보행 시 주변 상황을 직접 확인하세요.";
+	private static final String WALKING_MODE = "walking";
 	private static final String TMAP_OPTION_PREFIX = "TMAP_OPTION_";
 	private static final String ACTIVE_MODEL_KEY = "active_model";
 
@@ -39,20 +41,40 @@ public class RouteService {
 	private final RouteRequestLogService routeRequestLogService;
 
 	public RecommendResponse recommend(RecommendRequest request) {
-		requestValidator.validate(request);
 		long startedAt = System.currentTimeMillis();
+		boolean assessRisk = shouldAssessRisk(request);
 
-		String activeModel = appConfigService.getString(ACTIVE_MODEL_KEY);
+		String activeModel = assessRisk ? appConfigService.getString(ACTIVE_MODEL_KEY) : WALKING_MODE;
 		String cacheKey = cacheKey(request, activeModel);
 
-		RecommendResponse cached = recommendCache.getIfPresent(cacheKey);
-		RecommendResponse response = cached != null ? cached : buildResponse(request, activeModel);
-		if (cached == null) {
+		RecommendResponse response = recommendCache.getIfPresent(cacheKey);
+		if (response == null) {
+			response = assessRisk ? buildResponse(request, activeModel) : buildWalkingResponse(request);
 			recommendCache.put(cacheKey, response);
 		}
 
 		routeRequestLogService.log(request, response, System.currentTimeMillis() - startedAt);
 		return response;
+	}
+
+	private boolean shouldAssessRisk(RecommendRequest request) {
+		try {
+			requestValidator.validate(request);
+			return true;
+		} catch (OutOfAreaException e) {
+			if (!request.allowUnassessed()) {
+				throw e;
+			}
+			return false;
+		}
+	}
+
+	private RecommendResponse buildWalkingResponse(RecommendRequest request) {
+		RouteCandidate candidate = routeCandidateService.findWalkingRoute(toRouteRequest(request));
+		CandidateDto dto = new CandidateDto(0, toSource(candidate.source()), candidate.distanceMeters(),
+				durationMinutes(candidate.route().totalTimeSeconds()), null, null, null,
+				1.0, true, null, NavigationDto.from(candidate.route()));
+		return new RecommendResponse(WALKING_MODE, 0, List.of(dto), "위험도 평가 데이터가 없는 일반 도보 경로입니다.");
 	}
 
 	// 캐시 키에 active_model을 포함해서 v1/v2 전환 시 서로 다른 엔트리로 분리되게 한다.
@@ -106,7 +128,8 @@ public class RouteService {
 				(int) Math.round(riskScore.redLengthM()),
 				result.detourRatios().get(index),
 				result.eligible().get(index),
-				riskScore.segments());
+				riskScore.segments(),
+				NavigationDto.from(candidate.route()));
 	}
 
 	// RouteCandidate.source()는 searchOption 숫자("0"·"4"·"10"·"30") 또는 DETOUR_LEFT·

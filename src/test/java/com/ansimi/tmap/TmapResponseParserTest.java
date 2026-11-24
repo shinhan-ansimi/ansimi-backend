@@ -39,6 +39,11 @@ class TmapResponseParserTest {
 		assertThat(route.totalDistanceMeters()).isEqualTo(expectedDistance);
 		assertThat(route.totalTimeSeconds()).isEqualTo(expectedTime);
 		assertThat(route.coordinates()).hasSize(expectedCoordinateCount);
+		assertThat(route.steps()).isNotEmpty();
+		assertThat(route.steps().getFirst().pathIndex()).isZero();
+		assertThat(route.steps().getLast().pathIndex()).isEqualTo(expectedCoordinateCount - 1);
+		assertThat(route.steps().stream().map(TmapRoute.Step::pathIndex).toList()).isSorted();
+		assertThat(route.steps()).allMatch(step -> !step.instruction().isBlank());
 	}
 
 	@Test

@@ -5,5 +5,10 @@ import jakarta.validation.constraints.NotNull;
 
 public record RecommendRequest(
 		@Valid @NotNull Place origin,
-		@Valid @NotNull Place destination) {
+		@Valid @NotNull Place destination,
+		boolean allowUnassessed) {
+
+	public RecommendRequest(Place origin, Place destination) {
+		this(origin, destination, false);
+	}
 }

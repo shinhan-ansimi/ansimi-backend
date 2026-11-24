@@ -1,13 +1,16 @@
 package com.ansimi.route;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.util.List;
 import java.util.Map;
@@ -94,6 +97,7 @@ class RouteServiceTest {
 		assertThat(first.riskLevel()).isEqualTo("YELLOW");
 		assertThat(first.detourRatio()).isEqualTo(1.0);
 		assertThat(first.eligible()).isTrue();
+		assertThat(first.navigation().path()).hasSize(2);
 
 		CandidateDto second = response.candidates().get(1);
 		assertThat(second.index()).isEqualTo(1);
@@ -144,6 +148,29 @@ class RouteServiceTest {
 		routeService.recommend(request);
 
 		verify(routeCandidateService, times(2)).findCandidates(any(RouteRequest.class));
+	}
+
+	@Test
+	void 시범_지역_밖에서_허용하면_위험도_평가_없이_도보_경로를_반환한다() {
+		Place start = new Place(List.of(126.9770, 37.5652), "출발");
+		Place end = new Place(List.of(126.9785, 37.5729), "도착");
+		RecommendRequest oldRequest = new RecommendRequest(start, end);
+		RecommendRequest walkingRequest = new RecommendRequest(start, end, true);
+		willThrow(new OutOfAreaException("시범 지역 밖")).given(requestValidator).validate(oldRequest);
+		willThrow(new OutOfAreaException("시범 지역 밖")).given(requestValidator).validate(walkingRequest);
+		given(routeCandidateService.findWalkingRoute(any(RouteRequest.class))).willReturn(candidate("0", 1000, 600));
+
+		assertThatThrownBy(() -> routeService.recommend(oldRequest)).isInstanceOf(OutOfAreaException.class);
+		RecommendResponse response = routeService.recommend(walkingRequest);
+		assertThat(response.modelVersion()).isEqualTo("walking");
+		assertThat(response.recommendedIndex()).isZero();
+		assertThat(response.candidates()).singleElement().satisfies(candidate -> {
+			assertThat(candidate.riskScore()).isNull();
+			assertThat(candidate.riskLevel()).isNull();
+			assertThat(candidate.segments()).isNull();
+			assertThat(candidate.navigation().path()).hasSize(2);
+		});
+		verifyNoInteractions(riskScoringService, recommendPolicy);
 	}
 
 	// 후보마다 좌표가 달라야 riskScoringService.score(...) 스텁이 서로 섞이지 않는다.

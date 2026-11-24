@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.ansimi.tmap.TmapRoute.Coordinate;
+import com.ansimi.tmap.TmapRoute.Step;
 
 import lombok.RequiredArgsConstructor;
 import tools.jackson.core.JacksonException;
@@ -34,6 +35,7 @@ public class TmapResponseParser {
 		int totalDistanceMeters = 0;
 		int totalTimeSeconds = 0;
 		List<Coordinate> coordinates = new ArrayList<>();
+		List<Step> steps = new ArrayList<>();
 
 		for (JsonNode feature : root.path("features")) {
 			JsonNode properties = feature.path("properties");
@@ -46,10 +48,19 @@ public class TmapResponseParser {
 
 			if (GEOMETRY_LINE_STRING.equals(geometry.path("type").asString())) {
 				appendLineString(coordinates, geometry.path("coordinates"));
+			} else if ("Point".equals(geometry.path("type").asString())) {
+				String instruction = properties.path("description").asString();
+				if (instruction != null && !instruction.isBlank()) {
+					// Tmap의 안내점은 앞 구간의 끝에 위치하고, 출발점은 첫 구간 앞에 들어온다.
+					steps.add(new Step(Math.max(0, coordinates.size() - 1), instruction));
+				}
 			}
 		}
 
-		return new TmapRoute(totalDistanceMeters, totalTimeSeconds, coordinates);
+		if (coordinates.size() < 2) {
+			throw new TmapResponseParseException("Tmap 응답에 도보 경로 좌표가 없습니다.");
+		}
+		return new TmapRoute(totalDistanceMeters, totalTimeSeconds, coordinates, steps);
 	}
 
 	// 이어지는 두 구간이 접하는 지점의 좌표가 중복으로 들어오므로, 직전 좌표와 같으면 건너뛴다.

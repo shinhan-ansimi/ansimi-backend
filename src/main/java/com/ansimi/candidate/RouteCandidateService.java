@@ -13,6 +13,7 @@ import com.ansimi.tmap.PedestrianRouteRequest;
 import com.ansimi.tmap.TmapClient;
 import com.ansimi.tmap.TmapClientException;
 import com.ansimi.tmap.TmapRoute;
+import com.ansimi.tmap.TmapResponseParseException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,16 @@ public class RouteCandidateService {
 			deduplicated = addDetourCandidates(deduplicated, request);
 		}
 		return deduplicated;
+	}
+
+	public RouteCandidate findWalkingRoute(RouteRequest request) {
+		try {
+			return callOption(request, 0).blockOptional()
+					.orElseThrow(() -> new RouteProviderException("Tmap 도보 경로를 받아오지 못했습니다."));
+		} catch (TmapClientException | TmapResponseParseException e) {
+			log.warn("일반 도보 경로 호출 실패", e);
+			throw new RouteProviderException("Tmap 도보 경로를 받아오지 못했습니다.");
+		}
 	}
 
 	private List<RouteCandidate> callAllOptions(RouteRequest request) {
