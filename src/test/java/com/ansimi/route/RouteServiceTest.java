@@ -151,6 +151,16 @@ class RouteServiceTest {
 	}
 
 	@Test
+	void 권역_밖_옵션이_없는_기존_JSON은_기본적으로_허용하지_않는다() {
+		String body = """
+				{"origin":{"coord":[127.0473,37.5172]},"destination":{"coord":[127.0573,37.5232]}}
+				""";
+		RecommendRequest request = new ObjectMapper().readValue(body, RecommendRequest.class);
+
+		assertThat(request.allowUnassessed()).isFalse();
+	}
+
+	@Test
 	void 시범_지역_밖에서_허용하면_위험도_평가_없이_도보_경로를_반환한다() {
 		Place start = new Place(List.of(126.9770, 37.5652), "출발");
 		Place end = new Place(List.of(126.9785, 37.5729), "도착");
