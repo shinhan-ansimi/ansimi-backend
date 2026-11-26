@@ -8,6 +8,11 @@ AI 실데이터가 적재된 뒤, `docs/test_routes.json`의 20개 경로로 `/a
 등급 기준값을 실데이터 분포에 맞게 재조정(`level_yellow_min=75`, `level_red_min=92`,
 `db/seed/real_level_thresholds.sql`)한 뒤의 결과다.
 
+**이슈 #36 이후 주의**: 시범 지역이 강남구에서 서울 전역으로 확대됐다. 등급 기준값은
+애초에 서울 전역 risk_grid 전체로 계산된 값이라 그대로 유효하지만(`db/seed/README.md`
+참고), 아래 결과는 여전히 강남구 범위 좌표(`docs/test_routes.json`)로만 검증한 것이라
+서울 전역 범위에 대한 재검증은 아니다.
+
 ## 실행 방법
 
 1. AI 실데이터가 `risk_grid`에 적재되어 있고, `service_area`가 확정된 지역으로 설정되어
