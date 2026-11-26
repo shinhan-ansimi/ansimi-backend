@@ -36,8 +36,13 @@ DELETE FROM service_area;
 # 실제 시범 지역 데이터 (real_service_area.sql)
 
 이슈 #27: `dev_seed.sql`의 가짜 `service_area`(강남구 내 임의 좌표 3km x 3km)를 실제
-시범 지역(강남구)의 경계로 교체한다. 위 `dev_seed.sql`과 실행/삭제 방법은 동일하고
+시범 지역의 경계로 교체한다. 위 `dev_seed.sql`과 실행/삭제 방법은 동일하고
 (`db/seed/real_service_area.sql`로 경로만 바꿔서), `service_area.id=1` 행만 덮어쓴다.
+
+이슈 #36: 시범 지역을 강남구에서 서울 전역으로 확대했다. `risk_grid` 실데이터(이슈 #12)는
+이미 서울 전역 규모라 그대로 두고, `service_area` 경계만 자치구 25개의 실제 경계 polygon을
+합쳐서(`southkorea/seoul-maps`, ST_Union) 서울특별시 전체로 넓혔다. bbox를 안 쓴 이유는
+스크립트 상단 주석 참고.
 
 `risk_grid`는 그대로 두고(이슈 #12에서 `RiskGridImportRunner`로 AI 실데이터를 적재),
 `service_area` 경계만 이 스크립트로 먼저 갱신한 뒤 OUT_OF_AREA 경계 안/밖 좌표로
@@ -55,3 +60,8 @@ DELETE FROM service_area;
 `app_config`만 바꾸면 전체 경로 단위 `riskLevel`(요청마다 새 기준값으로 재계산됨)은
 맞지만 세그먼트별 색상(`segments`)과 `redLengthM`은 옛 기준값 그대로 남는다. 기준값을
 또 바꾸게 되면 이 스크립트의 `CASE` 조건도 새 값으로 맞춰서 다시 실행해야 한다.
+
+이슈 #36: `RiskGridImportService`는 적재 시 지역으로 필터링하지 않아 위 75/92는 애초에
+서울 전역 15.9만 행 기준으로 계산된 값이었다(강남구 bbox 안 데이터는 그중 3.9%뿐). 시범
+지역을 서울 전역으로 넓혀도 분포가 그대로이므로(강남구 평균 85.47 vs 전역 평균 83.99)
+재조정하지 않는다.
