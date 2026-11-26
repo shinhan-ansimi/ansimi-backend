@@ -36,8 +36,13 @@ DELETE FROM service_area;
 # 실제 시범 지역 데이터 (real_service_area.sql)
 
 이슈 #27: `dev_seed.sql`의 가짜 `service_area`(강남구 내 임의 좌표 3km x 3km)를 실제
-시범 지역(강남구)의 경계로 교체한다. 위 `dev_seed.sql`과 실행/삭제 방법은 동일하고
+시범 지역의 경계로 교체한다. 위 `dev_seed.sql`과 실행/삭제 방법은 동일하고
 (`db/seed/real_service_area.sql`로 경로만 바꿔서), `service_area.id=1` 행만 덮어쓴다.
+
+이슈 #36: 시범 지역을 강남구에서 서울 전역으로 확대했다. `risk_grid` 실데이터(이슈 #12)는
+이미 서울 전역 규모라 그대로 두고, `service_area` 경계만 자치구 25개의 실제 경계 polygon을
+합쳐서(`southkorea/seoul-maps`, ST_Union) 서울특별시 전체로 넓혔다. bbox를 안 쓴 이유는
+스크립트 상단 주석 참고.
 
 `risk_grid`는 그대로 두고(이슈 #12에서 `RiskGridImportRunner`로 AI 실데이터를 적재),
 `service_area` 경계만 이 스크립트로 먼저 갱신한 뒤 OUT_OF_AREA 경계 안/밖 좌표로
